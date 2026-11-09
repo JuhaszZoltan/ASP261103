@@ -1,4 +1,6 @@
+using ASP261103.Data;
 using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContext") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContext' not found.");
 
@@ -8,6 +10,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+using IServiceScope scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+SeedDatabase.Initialize(services);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
