@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ASP261103.Models;
@@ -20,7 +21,8 @@ public class Book
     public string Author { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Az ISBM szám megadása kötelező!")]
-    [RegularExpression(@"^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)", ErrorMessage = "Érvénytelen ISBN formátum")]
+    // https://regex101.com/
+    [RegularExpression("^(?=(?:[^0-9]*[0-9]){10}(?:(?:[^0-9]*[0-9]){3})?$)[\\d-]+$", ErrorMessage = "Érvénytelen ISBN formátum")]
     public string ISBN { get; set; } = string.Empty;
 
     [Range(1450, 2100, ErrorMessage = "Adj meg egy érvényes kiadási évet!")]
@@ -44,6 +46,7 @@ public class Book
     [DisplayFormat(DataFormatString = "{0:C0}")]
     public int Price { get; set; }
     [Display(Name = "Készleten")]
+    [ValidateNever]
     public bool IsAvilable { get; set; } = true;
 
     [Url(ErrorMessage = "Érvénytelen URL formátum!")]
@@ -52,5 +55,6 @@ public class Book
 
     [DataType(DataType.DateTime)]
     [Display(Name = "Rögzítés dátuma")]
+    [ValidateNever]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }
