@@ -15,7 +15,7 @@ public class BooksController : Controller
     // GET: BOOKS
     public async Task<IActionResult> Index()    
     {
-        return View(await _context.Book.ToListAsync());
+        return View(await _context.Books.ToListAsync());
     }
 
     // GET: BOOKS/Details/5
@@ -26,7 +26,7 @@ public class BooksController : Controller
             return NotFound();
         }
 
-        var book = await _context.Book
+        var book = await _context.Books
             .FirstOrDefaultAsync(m => m.Id == id);
         if (book == null)
         {
@@ -66,7 +66,7 @@ public class BooksController : Controller
             return NotFound();
         }
 
-        var book = await _context.Book.FindAsync(id);
+        var book = await _context.Books.FindAsync(id);
         if (book == null)
         {
             return NotFound();
@@ -117,7 +117,7 @@ public class BooksController : Controller
             return NotFound();
         }
 
-        var book = await _context.Book
+        var book = await _context.Books
             .FirstOrDefaultAsync(m => m.Id == id);
         if (book == null)
         {
@@ -132,10 +132,10 @@ public class BooksController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? id)
     {
-        var book = await _context.Book.FindAsync(id);
+        var book = await _context.Books.FindAsync(id);
         if (book != null)
         {
-            _context.Book.Remove(book);
+            _context.Books.Remove(book);
         }
 
         await _context.SaveChangesAsync();
@@ -144,6 +144,6 @@ public class BooksController : Controller
 
     private bool BookExists(int? id)
     {
-        return _context.Book.Any(e => e.Id == id);
+        return _context.Books.Any(e => e.Id == id);
     }
 }
